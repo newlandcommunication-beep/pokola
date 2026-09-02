@@ -1,0 +1,120 @@
+{
+  "entities": {
+    "users": {
+      "fields": {
+        "email": { "type": "string", "description": "Student or staff email address" },
+        "fullName": { "type": "string", "description": "Full legal name of the user" },
+        "role": { "type": "string", "description": "Role: student | loan_officer | admin | super_admin" },
+        "phone": { "type": "string", "description": "Lesotho phone number e.g. +266 5891 2341" },
+        "studentIdNumber": { "type": "string", "description": "Institutional Student ID number" },
+        "institution": { "type": "string", "description": "Tertiary institution in Lesotho (NUL, LUCT, LP, Botho, CAS)" },
+        "faculty": { "type": "string", "description": "Academic department or faculty" },
+        "yearOfStudy": { "type": "number", "description": "Academic year of study (1 - 5)" },
+        "residentialAddress": { "type": "string", "description": "Current physical residence in Lesotho" },
+        "isVerified": { "type": "boolean", "description": "Whether student verification has been completed" },
+        "createdAt": { "type": "string", "description": "ISO timestamp of account creation" }
+      }
+    },
+    "businessSettings": {
+      "fields": {
+        "maxLoanAmount": { "type": "number", "description": "Maximum allowed loan amount in Maloti" },
+        "minLoanAmount": { "type": "number", "description": "Minimum allowed loan amount in Maloti" },
+        "monthlyInterestRate": { "type": "number", "description": "Configurable monthly simple interest rate (e.g. 0.25)" },
+        "defaultRepaymentPeriodDays": { "type": "number", "description": "Default loan term in days (e.g. 30)" },
+        "lateFeePercent": { "type": "number", "description": "Late penalty percentage" },
+        "gracePeriodDays": { "type": "number", "description": "Grace period days before late penalty applies" }
+      }
+    },
+    "loanApplications": {
+      "fields": {
+        "applicationNumber": { "type": "string", "description": "Human-readable application code" },
+        "studentId": { "type": "string", "description": "Foreign key reference to users entity" },
+        "studentName": { "type": "string", "description": "Student full name" },
+        "institution": { "type": "string", "description": "Tertiary educational institution" },
+        "requestedAmount": { "type": "number", "description": "Requested loan amount in Maloti" },
+        "purpose": { "type": "string", "description": "Educational or living expense purpose" },
+        "calculatedInterest": { "type": "number", "description": "Calculated interest in Maloti" },
+        "totalRepayment": { "type": "number", "description": "Total principal + interest" },
+        "status": { "type": "string", "description": "submitted | under_review | approved | rejected | accepted | active" },
+        "appliedAt": { "type": "string", "description": "ISO timestamp of application submission" }
+      }
+    },
+    "loans": {
+      "fields": {
+        "loanNumber": { "type": "string", "description": "Unique loan reference number (PKL-XXXX)" },
+        "studentId": { "type": "string", "description": "Foreign key reference to student user" },
+        "studentName": { "type": "string", "description": "Student full name" },
+        "principal": { "type": "number", "description": "Disbursed principal in Maloti" },
+        "monthlyInterestRate": { "type": "number", "description": "Contractual interest rate" },
+        "interestAmount": { "type": "number", "description": "Calculated interest in Maloti" },
+        "totalRepayable": { "type": "number", "description": "Total due amount" },
+        "amountPaid": { "type": "number", "description": "Cumulative repayments made" },
+        "balance": { "type": "number", "description": "Remaining debt balance" },
+        "status": { "type": "string", "description": "active | partially_paid | fully_paid | overdue | defaulted" },
+        "dueDate": { "type": "string", "description": "Repayment deadline YYYY-MM-DD" },
+        "disbursedAt": { "type": "string", "description": "Disbursement timestamp" }
+      }
+    },
+    "repayments": {
+      "fields": {
+        "receiptNumber": { "type": "string", "description": "Unique receipt code" },
+        "loanId": { "type": "string", "description": "Foreign key reference to loans entity" },
+        "studentId": { "type": "string", "description": "Foreign key reference to student" },
+        "amount": { "type": "number", "description": "Repayment amount in Maloti" },
+        "date": { "type": "string", "description": "Payment receipt timestamp" },
+        "paymentMethod": { "type": "string", "description": "mpesa | ecocash | bank_transfer | cash" },
+        "transactionReference": { "type": "string", "description": "Mobile Money or bank reference code" },
+        "recordedBy": { "type": "string", "description": "User ID of officer or system who recorded the payment" }
+      }
+    },
+    "auditLogs": {
+      "fields": {
+        "timestamp": { "type": "string", "description": "Immutable log timestamp" },
+        "userId": { "type": "string", "description": "User performing action" },
+        "userName": { "type": "string", "description": "User full name" },
+        "userRole": { "type": "string", "description": "Role of actor" },
+        "action": { "type": "string", "description": "Action type identifier" },
+        "affectedRecordType": { "type": "string", "description": "LOAN | APPLICATION | REPAYMENT | SETTINGS" },
+        "affectedRecordId": { "type": "string", "description": "Identifier of modified record" },
+        "details": { "type": "string", "description": "Audit narrative" }
+      }
+    },
+    "notifications": {
+      "fields": {
+        "userId": { "type": "string", "description": "Recipient student or staff user ID" },
+        "title": { "type": "string", "description": "Push notification header" },
+        "message": { "type": "string", "description": "Notification content body" },
+        "type": { "type": "string", "description": "info | success | warning | alert" },
+        "category": { "type": "string", "description": "loan_status | repayment_deadline | announcement | system" },
+        "isRead": { "type": "boolean", "description": "Read status indicator" },
+        "actionUrl": { "type": "string", "description": "Deep-link target route or modal" },
+        "fcmMessageId": { "type": "string", "description": "Unique Firebase Cloud Messaging dispatch ID" },
+        "createdAt": { "type": "string", "description": "ISO timestamp of creation" }
+      }
+    },
+    "announcements": {
+      "fields": {
+        "title": { "type": "string", "description": "Administrative announcement title" },
+        "body": { "type": "string", "description": "Detailed broadcast message content" },
+        "category": { "type": "string", "description": "general | deadline | policy | maintenance | bursary" },
+        "priority": { "type": "string", "description": "normal | high | urgent" },
+        "targetAudience": { "type": "string", "description": "all | active_borrowers | overdue | specific_campus" },
+        "targetCampus": { "type": "string", "description": "Target institution or all" },
+        "authorId": { "type": "string", "description": "Admin author user ID" },
+        "authorName": { "type": "string", "description": "Admin author full name" },
+        "sentViaFCM": { "type": "boolean", "description": "Whether broadcast was pushed via Firebase Cloud Messaging" },
+        "createdAt": { "type": "string", "description": "ISO timestamp of broadcast" }
+      }
+    },
+    "fcmTokens": {
+      "fields": {
+        "userId": { "type": "string", "description": "User identifier associated with this token" },
+        "token": { "type": "string", "description": "Firebase Cloud Messaging client registration token" },
+        "deviceType": { "type": "string", "description": "web | ios | android" },
+        "browser": { "type": "string", "description": "User browser / client platform info" },
+        "notificationEnabled": { "type": "boolean", "description": "Whether push notifications are actively permitted" },
+        "lastUpdated": { "type": "string", "description": "ISO timestamp of last token refresh" }
+      }
+    }
+  }
+}

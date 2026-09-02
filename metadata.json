@@ -1,0 +1,6 @@
+{
+  "name": "POKOLA - Lesotho Student Loan Platform",
+  "description": "A production-grade student loan assistance and management platform designed for students and educational institutions in Lesotho.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
